@@ -4,8 +4,6 @@ import com.spb.springbootpractice.domain.Student;
 import com.spb.springbootpractice.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +44,28 @@ public class StudentController {
     public ResponseEntity<Student> getStudentById(@RequestParam ("id") Long id) {
         Student student = studentService.getStudentById(id);
         return ResponseEntity.ok().body(student);
+    }
+
+    @GetMapping("/id}")
+    public ResponseEntity<Student> findStudentById(@PathVariable("id") Long id) {
+        Student student = studentService.getStudentById(id);
+        return ResponseEntity.ok().body(student);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> deleteStudentById(@PathVariable("id") Long id) {
+        studentService.deleteStudentById(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Student deleted successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Map<String, String>> updateStudent(@PathVariable("id") Long id, @Valid @RequestBody Student student) {
+        Student updatedStudent = studentService.updateStudent(id, student);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Student updated successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

@@ -3,6 +3,7 @@ package com.spb.springbootpractice.service;
 import com.spb.springbootpractice.domain.Student;
 import com.spb.springbootpractice.exception.EmailConflictException;
 import com.spb.springbootpractice.repository.StudentRepository;
+import com.spb.springbootpractice.exception.StudentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,12 @@ public class StudentService {
     }
 
     public Student getStudentById(Long id) {
-        return studentRepository.findById(id).orElseThrow();
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student not found"));
+        return student;
+    }
+
+    public void deleteStudentById(Long id) {
+        Student student = getStudentById(id);
+        studentRepository.delete(student);
     }
 }
