@@ -1,9 +1,14 @@
 package com.spb.springbootpractice.controller;
 
 import com.spb.springbootpractice.domain.Student;
+import com.spb.springbootpractice.dto.UpdateStudentDTO;
 import com.spb.springbootpractice.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,11 +66,31 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Map<String, String>> updateStudent(@PathVariable("id") Long id, @Valid @RequestBody Student student) {
-        Student updatedStudent = studentService.updateStudent(id, student);
+    public ResponseEntity<Map<String, String>> updateStudent(@PathVariable("id") Long id, @Valid @RequestBody UpdateStudentDTO updateStudentDTO) {
+        studentService.updateStudentById(id, updateStudentDTO);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Student updated successfully");
         return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    /*
+   PAGINATION
+/http://localhost: 8080/students/ page?
+page=1&
+size=10&
+sort=name&
+direction=DESC + GET
+     */
+    @GetMapping("/page")
+    public ResponseEntity<Page<Student>> getAllStudentsByPage(@RequestParam("page") Integer page,
+                                                              @RequestParam("size") Integer size,
+                                                              @RequestParam("sort") String sort,
+                                                              @RequestParam("direction") Sort.Direction direction) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
+        Page<Student> students = studentService.getAllStudentsByPage(pageable);
+        return ResponseEntity.ok().body(students);
     }
 
 
