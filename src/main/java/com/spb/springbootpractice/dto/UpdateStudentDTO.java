@@ -1,5 +1,6 @@
 package com.spb.springbootpractice.dto;
 
+import com.spb.springbootpractice.domain.Student;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,12 @@ public class UpdateStudentDTO {
 
     @Email(message = "Email should be valid")
     private String email;
+
+    public UpdateStudentDTO(Student student) {
+        this.name = student.getName();
+        this.lastName = student.getLastName();
+        this.email = student.getEmail();
+    }
 
 
 }

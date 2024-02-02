@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springboot_db
+    username: db_user
+    password: db_password
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate.format_sql: true
+
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: never
+
+logging:
+  file:
+    name: log/studentapp.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+  level:
+    '[org.springframework.web]': WARN
+    '[org.hibernate]': INFO
+    #'[com.spb.springbootpractice]': DEBUG
+    com:
+     spb:
+            springbootpractice:
+            controller: DEBUG
+            service: DEBUG
+            repository: DEBUG
