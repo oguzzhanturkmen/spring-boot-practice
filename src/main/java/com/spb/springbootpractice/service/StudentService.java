@@ -63,4 +63,31 @@ public class StudentService {
     public Page<Student> getAllStudentsByPage(Pageable pageable) {
         return studentRepository.findAll(pageable);
     }
+
+    public List<Student> getAllStudentsByGrade(Integer grade) {
+
+        /*
+        If you can't use JPQL, for a complex query, you can use the @Query annotation
+        @Query("SELECT s FROM Student s WHERE s.grade = :grade")
+        List<Student> findAllByGrade(@Param("grade") Integer grade); --> check StudentRepository.java
+
+         */
+        return studentRepository.findAllByGrade(grade);
+    }
+
+    public UpdateStudentDTO getStudentInfo(Long id) {
+        Student student = getStudentById(id);
+        return new UpdateStudentDTO(student);
+    }
+
+    public List<Student> getStudentByLastName(String lastName) {
+        return studentRepository.findAllByLastName(lastName);
+    }
+
+    public UpdateStudentDTO getStudentDTOById(Long id) {
+        UpdateStudentDTO studentDTO = studentRepository.findStudentDTOById(id)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
+
+        return studentDTO;
+    }
 }

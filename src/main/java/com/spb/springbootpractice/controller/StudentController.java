@@ -92,6 +92,25 @@ direction=DESC + GET
         Page<Student> students = studentService.getAllStudentsByPage(pageable);
         return ResponseEntity.ok().body(students);
     }
+    @GetMapping("/grade/{grade}")
+    public ResponseEntity<List<Student>> getAllStudentsByGrade(@PathVariable("grade") Integer grade) {
+        List<Student> students = studentService.getAllStudentsByGrade(grade);
+        return ResponseEntity.ok().body(students);
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<UpdateStudentDTO> getStudentInfo(@PathVariable("id")  Long id ){
+        UpdateStudentDTO studentInfo = studentService.getStudentInfo(id);
+        return ResponseEntity.ok().body(studentInfo);
+    }
+
+    @GetMapping("/query")
+    public ResponseEntity<List<Student>> getStudentByLastName(@RequestParam("lastName") String lastName) {
+        List<Student> students = studentService.getStudentByLastName(lastName);
+        return ResponseEntity.ok().body(students);
+    }
+
+
 
 
 
